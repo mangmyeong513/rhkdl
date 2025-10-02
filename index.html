@@ -82,11 +82,12 @@
      radial-gradient(600px 40px at 80% 100%, rgba(69,224,255,.12), transparent 60%)}
 
 /* === 모바일 대응 광고 사이즈 조정 === */
-  @media (max-width:420px){
-    .adstrip{
-      grid-template-columns:1fr;
-      padding:4px;
-      gap:4px;
+  @media (max-width: 540px) {
+    html, body { height: 100svh; } /* iOS 주소창 대응 */
+    body { 
+      display:block;               /* 가운데 정렬 해제 */
+      overflow:auto; 
+      background:#0a1121; 
     }
     .ad{
       height:28px; /* 얇아짐 */
