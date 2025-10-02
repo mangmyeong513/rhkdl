@@ -81,11 +81,50 @@
      radial-gradient(600px 40px at 20% 0, rgba(255,216,77,.2), transparent 60%),
      radial-gradient(600px 40px at 80% 100%, rgba(69,224,255,.12), transparent 60%)}
 
+/* === 모바일 대응 광고 사이즈 조정 === */
   @media (max-width:420px){
-    .adstrip{grid-template-columns:1fr}
-    .cats{grid-template-columns:repeat(4,1fr)}
-    main{height:calc(100% - 200px)}
+    .adstrip{
+      grid-template-columns:1fr;
+      padding:4px;
+      gap:4px;
+    }
+    .ad{
+      height:28px; /* 얇아짐 */
+      border-radius:6px;
+    }
+    .ad h4{
+      font-size:10px;
+      top:4px;
+    }
+    .ad p{
+      font-size:8px;
+      bottom:2px;
+    }
+    .ad .badge{
+      font-size:8px;
+      padding:2px 4px;
+    }
+    .ticker{
+      height:20px;
+    }
+    .ticker .run{
+      font-size:10px;
+    }
+    .cats{
+      grid-template-columns:repeat(4,1fr);
+      gap:4px;
+      padding:4px;
+    }
+    .cat{
+      font-size:9px;
+      padding:6px 0;
+    }
+    /* 본문 높이 다시 계산 */
+    main{
+      height:calc(100% - 140px); /* 상단 광고 덜 차지 */
+    }
   }
+
 </style>
 </head>
 <body>
