@@ -1,53 +1,137 @@
-<!-- 파일명: prop-racing-site.html (정적 데모: 실제 배팅 불가) -->
+<!-- prop-racing-with-tabs.html -->
 <!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Racing Demo — FOR FILM USE ONLY</title>
+<title>RACE-DEMO — TABBED / YT EMBED (FOR FILM)</title>
 <style>
-  :root{--bg:#0f1724;--card:#0b1220;--accent:#ffcc00;--muted:#94a3b8}
-  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans KR',sans-serif;background:linear-gradient(180deg,#071028 0%,#0f1724 100%);color:#e6eef8}
-  header{padding:16px 20px;display:flex;align-items:center;gap:12px}
-  .brand{font-weight:700;color:var(--accent)}
-  .banner{margin:8px 20px;padding:8px 12px;background:#2b2f3a;color:#fff;border-radius:8px;font-size:13px}
-  main{display:grid;grid-template-columns:1fr 360px;gap:18px;padding:20px}
-  .player{background:var(--card);border-radius:12px;padding:12px;min-height:300px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center}
-  video{width:100%;height:100%;border-radius:8px;object-fit:cover;display:block}
-  .sidebar{background:#081122;border-radius:12px;padding:16px;color:var(--muted);height:fit-content}
+  :root{
+    --bg:#0b1220; --panel:#0f1724; --muted:#9aa6b2; --accent:#ffcc00; --card:#0b1622;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter, 'Noto Sans KR',system-ui,-apple-system,Segoe UI,Roboto; background:linear-gradient(180deg,#050814 0%,#0b1220 100%);color:#e6eef8}
+  header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.03)}
+  .logo{font-weight:800;color:var(--accent);letter-spacing:1px}
+  .notice{margin-left:auto;background:#4b2b2b;padding:8px 10px;border-radius:8px;font-size:13px;color:#fff;font-weight:700}
+  .container{display:grid;grid-template-columns:1fr 360px;gap:18px;padding:18px;align-items:start}
+  /* 탭(가로 스크롤) */
+  .tab-strip{display:flex;gap:8px;overflow:auto;padding:10px 0;margin:8px 0}
+  .tab{flex:0 0 auto;padding:10px 14px;background:linear-gradient(180deg,#0f1724,#0b1622);border-radius:10px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;white-space:nowrap;color:var(--muted)}
+  .tab.active{background:linear-gradient(180deg,#ffdd66,#ffcc00);color:#071422;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+  /* 플레이어 카드 */
+  .player{background:var(--panel);border-radius:12px;padding:12px;min-height:360px;display:flex;flex-direction:column;gap:12px}
+  .player .meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
+  .player .video-wrap{width:100%;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  iframe{width:100%;height:100%;border:0;display:block}
+  .controls{display:flex;gap:8px;align-items:center}
+  .btn{padding:10px 14px;border-radius:10px;border:none;font-weight:800;cursor:not-allowed;background:linear-gradient(180deg,#ffdd66,#ffcc00);color:#071422;opacity:0.6}
+  .info{font-size:12px;color:var(--muted)}
+  /* 사이드바 */
+  .sidebar{background:#081122;border-radius:12px;padding:14px;color:var(--muted);height:fit-content}
   .odds{display:grid;gap:8px;margin-top:8px}
-  .odds .row{display:flex;justify-content:space-between;padding:8px;background:#071424;border-radius:8px}
-  .btn{display:inline-block;padding:10px 14px;border-radius:8px;background:linear-gradient(180deg,#ffdd66,#ffcc00);color:#071422;font-weight:700;border:none;cursor:not-allowed;opacity:0.6}
-  .foot{padding:16px;text-align:center;font-size:13px;color:var(--muted)}
-  .watermark{position:fixed;left:12px;bottom:12px;background:#111827aa;color:#fff;padding:6px 8px;border-radius:8px;font-size:12px}
-  .notice{background:#7f1d1d;color:#fff;padding:8px;border-radius:8px;margin:6px 0;font-weight:700}
+  .odds .row{display:flex;justify-content:space-between;padding:10px;background:#071424;border-radius:8px}
+  .watermark{position:fixed;left:12px;bottom:12px;background:#111827cc;color:#fff;padding:6px 8px;border-radius:8px;font-size:12px}
+  /* responsive */
+  @media (max-width:900px){
+    .container{grid-template-columns:1fr}
+    .sidebar{order:2}
+    .player{order:1}
+  }
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">RACE-DEMO</div>
-  <div style="flex:1"></div>
-  <div class="banner">FOR FILM/EDUCATION — NO REAL BETS</div>
+  <div class="logo">RACE-DEMO</div>
+  <nav style="margin-left:18px;flex:1">
+    <!-- 이동탭(큰 메뉴처럼 보이게) -->
+    <div class="tab-strip" id="mainTabs" role="tablist" aria-label="main tabs">
+      <div class="tab active" data-panel="panel-live">경주중계</div>
+      <div class="tab" data-panel="panel-list">경주리스트</div>
+      <div class="tab" data-panel="panel-virtual">가상경마</div>
+      <div class="tab" data-panel="panel-history">구매내역</div>
+      <div class="tab" data-panel="panel-result">경주결과</div>
+      <div class="tab" data-panel="panel-event">이벤트</div>
+    </div>
+  </nav>
+  <div class="notice">FOR FILM / DEMO — NO BETS</div>
 </header>
 
-<main>
-  <section class="player" aria-label="race-video">
-    <!-- 로컬 또는 제미나이에서 받은 경마 영상 파일을 여기에 넣어라 -->
-    <video autoplay muted loop playsinline poster="" id="raceVid">
-      <source src="race-sample.mp4" type="video/mp4">
-      <!-- 대체 텍스트 프레임 -->
-      이 브라우저는 비디오 태그를 지원하지 않습니다.
-    </video>
-    <div style="width:100%;display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:14px;color:var(--muted)">Event: Spring Stakes — Demo</div>
-      <div style="font-size:13px;color:var(--muted)">Status: LIVE (DEMO)</div>
+<main class="container">
+  <!-- 플레이어 + 탭 콘텐츠 -->
+  <section class="player" aria-label="player and panels">
+    <div class="meta">
+      <div>
+        <strong id="eventTitle">Spring Stakes • Demo</strong><br>
+        <span class="info" id="eventSub">부산 6회 1400M — 데모</span>
+      </div>
+      <div class="info">Status: <strong style="color:var(--accent)">LIVE (DEMO)</strong></div>
     </div>
+
+    <!-- 실제 영상 (YouTube embed) -->
+    <div class="video-wrap" id="videoWrap">
+      <!-- 기본값: 유튜브 임베드. YT ID 바꾸면 됨 -->
+      <iframe id="ytPlayer" src="https://www.youtube.com/watch?v=b-X9ej-pncw"
+        title="Demo race video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <!-- 탭별 패널(간단한 텍스트/표시용) -->
+    <div id="panels">
+      <div class="panel" id="panel-live" data-visible>
+        <div style="display:flex;gap:10px;align-items:center;justify-content:space-between">
+          <div style="display:flex;gap:8px;align-items:center">
+            <div style="width:64px;height:48px;background:#061627;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted)">LIVE</div>
+            <div>
+              <div style="font-weight:700">경주 실황</div>
+              <div class="info">화면 우측의 영상이 재생됩니다 (YouTube).</div>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="btn" disabled>배팅하기</button>
+            <button class="btn" disabled>구매내역</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-list" style="display:none">
+        <div style="font-weight:700">경주 리스트 (데모)</div>
+        <div class="info" style="margin-top:8px">다음 경주, 출주마, 거리 등이 여기에 표시됩니다 (연출용).</div>
+        <table style="width:100%;margin-top:8px;border-collapse:collapse;color:#dfe9f6;font-size:13px">
+          <thead><tr style="text-align:left;color:var(--muted)"><th>회차</th><th>경주명</th><th>거리</th><th>시작</th></tr></thead>
+          <tbody>
+            <tr><td>6R</td><td>Spring Stakes (Demo)</td><td>1400M</td><td>13:50</td></tr>
+            <tr><td>7R</td><td>Autumn Cup</td><td>1800M</td><td>14:30</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="panel-virtual" style="display:none">
+        <div style="font-weight:700">가상경마 (데모)</div>
+        <div class="info">애니메이션 / 가상 영상 샘플을 보여주는 영역. 실제 배팅 절대 아님.</div>
+      </div>
+
+      <div class="panel" id="panel-history" style="display:none">
+        <div style="font-weight:700">구매내역 (데모)</div>
+        <div class="info">과거 거래 내역은 비활성화되어 있습니다.</div>
+      </div>
+
+      <div class="panel" id="panel-result" style="display:none">
+        <div style="font-weight:700">경주결과</div>
+        <div class="info">도착 순위, 통계는 연출용 데이터입니다.</div>
+      </div>
+
+      <div class="panel" id="panel-event" style="display:none">
+        <div style="font-weight:700">이벤트</div>
+        <div class="info">프로모션, 공지(데모) 영역</div>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;font-size:12px;color:var(--muted)">연출 팁: 유튜브 전체화면 후 OBS나 화면 녹화기로 캡쳐 → 장면 크롭하면 진짜같음.</div>
   </section>
 
-  <aside class="sidebar" aria-label="demo-panel">
-    <div class="notice">이 페이지는 소품용 데모입니다. 실제 베팅·결제 기능 없음</div>
-
-    <div style="font-weight:700;color:#fff">참가마 / 오즈</div>
+  <!-- 사이드바 (오즈/마감 등 UI 프롭) -->
+  <aside class="sidebar" aria-label="demo sidebar">
+    <div style="font-weight:700;color:#fff">참가마 / 오즈 (데모)</div>
     <div class="odds" role="list">
       <div class="row"><span>1. 블루 제트</span><strong>5.2</strong></div>
       <div class="row"><span>2. 스톰 라이더</span><strong>3.8</strong></div>
@@ -56,18 +140,48 @@
     </div>
 
     <div style="margin-top:12px">
-      <button class="btn" disabled>배팅하기 (체크모드)</button>
-      <div style="font-size:12px;margin-top:8px;color:var(--muted)">버튼은 데모용으로 비활성화되어 있습니다</div>
+      <button class="btn" disabled style="width:100%">가상 배팅 (비활성)</button>
+      <div style="font-size:12px;margin-top:8px;color:var(--muted)">버튼은 연출용으로 비활성화되어 있습니다.</div>
     </div>
 
-    <div style="margin-top:14px;font-size:13px;color:var(--muted)">
-      연출 팁: 비디오를 전체 화면으로 재생 후 크롭해서 촬영하면 더 현실감 있음.
-    </div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0">
+    <div style="font-size:12px;color:var(--muted)">TIP: YouTube 영상 ID를 바꿔서 다양한 경주 장면을 연출하세요.</div>
   </aside>
 </main>
 
-<div class="foot">소품용 데모 — 실제 베팅 또는 결제 관련 정보 없음</div>
 <div class="watermark">DEMO • FOR FILM USE ONLY</div>
 
+<script>
+  // 탭 전환 스크립트 (심플)
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      // panel 전환
+      const target = t.getAttribute('data-panel');
+      document.querySelectorAll('#panels .panel').forEach(p=>{
+        p.style.display = (p.id === target) ? '' : 'none';
+      });
+      // (선택적) 패널에 따라 제목 바꾸기
+      const titleMap = {
+        'panel-live':'Spring Stakes • Demo',
+        'panel-list':'경주 리스트 • Demo',
+        'panel-virtual':'가상경마 • Demo',
+        'panel-history':'구매내역 • Demo',
+        'panel-result':'경주결과 • Demo',
+        'panel-event':'이벤트 • Demo'
+      };
+      document.getElementById('eventTitle').textContent = titleMap[target] || 'RACE-DEMO';
+    });
+  });
+
+  // 유튜브 ID를 동적으로 바꾸고 싶으면 아래 함수 호출
+  function setYouTubeVideo(videoId){
+    const iframe = document.getElementById('ytPlayer');
+    iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?rel=0&playsinline=1`;
+  }
+
+  // 예시: setYouTubeVideo('dQw4w9WgXcQ')  // 바꿔써
+</script>
 </body>
 </html>
