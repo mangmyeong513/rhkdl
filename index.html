@@ -1,0 +1,73 @@
+<!-- 파일명: prop-racing-site.html (정적 데모: 실제 배팅 불가) -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Racing Demo — FOR FILM USE ONLY</title>
+<style>
+  :root{--bg:#0f1724;--card:#0b1220;--accent:#ffcc00;--muted:#94a3b8}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans KR',sans-serif;background:linear-gradient(180deg,#071028 0%,#0f1724 100%);color:#e6eef8}
+  header{padding:16px 20px;display:flex;align-items:center;gap:12px}
+  .brand{font-weight:700;color:var(--accent)}
+  .banner{margin:8px 20px;padding:8px 12px;background:#2b2f3a;color:#fff;border-radius:8px;font-size:13px}
+  main{display:grid;grid-template-columns:1fr 360px;gap:18px;padding:20px}
+  .player{background:var(--card);border-radius:12px;padding:12px;min-height:300px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center}
+  video{width:100%;height:100%;border-radius:8px;object-fit:cover;display:block}
+  .sidebar{background:#081122;border-radius:12px;padding:16px;color:var(--muted);height:fit-content}
+  .odds{display:grid;gap:8px;margin-top:8px}
+  .odds .row{display:flex;justify-content:space-between;padding:8px;background:#071424;border-radius:8px}
+  .btn{display:inline-block;padding:10px 14px;border-radius:8px;background:linear-gradient(180deg,#ffdd66,#ffcc00);color:#071422;font-weight:700;border:none;cursor:not-allowed;opacity:0.6}
+  .foot{padding:16px;text-align:center;font-size:13px;color:var(--muted)}
+  .watermark{position:fixed;left:12px;bottom:12px;background:#111827aa;color:#fff;padding:6px 8px;border-radius:8px;font-size:12px}
+  .notice{background:#7f1d1d;color:#fff;padding:8px;border-radius:8px;margin:6px 0;font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">RACE-DEMO</div>
+  <div style="flex:1"></div>
+  <div class="banner">FOR FILM/EDUCATION — NO REAL BETS</div>
+</header>
+
+<main>
+  <section class="player" aria-label="race-video">
+    <!-- 로컬 또는 제미나이에서 받은 경마 영상 파일을 여기에 넣어라 -->
+    <video autoplay muted loop playsinline poster="" id="raceVid">
+      <source src="race-sample.mp4" type="video/mp4">
+      <!-- 대체 텍스트 프레임 -->
+      이 브라우저는 비디오 태그를 지원하지 않습니다.
+    </video>
+    <div style="width:100%;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:14px;color:var(--muted)">Event: Spring Stakes — Demo</div>
+      <div style="font-size:13px;color:var(--muted)">Status: LIVE (DEMO)</div>
+    </div>
+  </section>
+
+  <aside class="sidebar" aria-label="demo-panel">
+    <div class="notice">이 페이지는 소품용 데모입니다. 실제 베팅·결제 기능 없음</div>
+
+    <div style="font-weight:700;color:#fff">참가마 / 오즈</div>
+    <div class="odds" role="list">
+      <div class="row"><span>1. 블루 제트</span><strong>5.2</strong></div>
+      <div class="row"><span>2. 스톰 라이더</span><strong>3.8</strong></div>
+      <div class="row"><span>3. 레드 썬</span><strong>9.5</strong></div>
+      <div class="row"><span>4. 실버 브리즈</span><strong>7.1</strong></div>
+    </div>
+
+    <div style="margin-top:12px">
+      <button class="btn" disabled>배팅하기 (체크모드)</button>
+      <div style="font-size:12px;margin-top:8px;color:var(--muted)">버튼은 데모용으로 비활성화되어 있습니다</div>
+    </div>
+
+    <div style="margin-top:14px;font-size:13px;color:var(--muted)">
+      연출 팁: 비디오를 전체 화면으로 재생 후 크롭해서 촬영하면 더 현실감 있음.
+    </div>
+  </aside>
+</main>
+
+<div class="foot">소품용 데모 — 실제 베팅 또는 결제 관련 정보 없음</div>
+<div class="watermark">DEMO • FOR FILM USE ONLY</div>
+
+</body>
+</html>
